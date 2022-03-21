@@ -12,7 +12,7 @@ https://mp.weixin.qq.com/s/qLmEp8KXmYYyGaPkLWGwAw
 # 更新记录
 
 1. 20220321 添加配置文件功能,记录命令有一些不友好。[已添加]
-
+2. 20220321 不小心删除了整个项目,需要重新积累Star啦
    
 
 # Todo
