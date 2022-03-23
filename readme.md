@@ -13,15 +13,15 @@ https://mp.weixin.qq.com/s/qLmEp8KXmYYyGaPkLWGwAw
 
 1. 20220321 添加配置文件功能,记录命令有一些不友好。[已添加]
 
+2. 20220323 增加css选择器（find_element_by_css_selector）处理其他三个选择器无法匹配到空格关键字的问题
+
    
 
 # Todo
 
-1. 添加css选择器,处理其他三个选择器无法匹配到空格关键字的问题
+2. 考虑扩展为注入JS来进行登陆参数匹配,便于用户在浏览器调试(概率)。
 
-2. 考虑扩展为注入JS来进行登陆参数匹配,便于用户在浏览器调试。
-
-3. 对接验证码识别方案。
+3. 对接验证码识别方案(概率)。
 
    
 
@@ -56,77 +56,71 @@ python3 brute-selenium.py -lu http://xxxxx/login.html --user_name suLoginname  -
 # 使用方法
 
 ```
-Python3 was used !!! 应该也支持python2环境[后续可能放弃支持]
+Python3 was used !!! This program supports Python2 and Python3
 
-选项参数：
+usage: brute-selenium.py [-h] [-lu LOGIN_URL] [-t1 TIME_1] [-t2 TIME_2] [-ui USER_ID] [-un USER_NAME] [-uc USER_CLASS] [-us USER_CSS_SELECTOR] [-pi PASS_ID] [-pn PASS_NAME] [-pc PASS_CLASS] [-ps PASS_CSS_SELECTOR]
+                         [-bi BUTTON_ID] [-bn BUTTON_NAME] [-bc BUTTON_CLASS] [-bs BUTTON_CSS_SELECTOR] [-ud USER_DICT] [-pd PASS_DICT] [-k KEYWORD] [-bh BROWSER_HEADLESS] [-bp BROWSER_PROXY] [-bua BROWSER_USERAGENT]
+                         [-bud BROWSER_USER_DIR] [-bcp BROWSER_CHROME_PATH] [-bdp BROWSER_DRIVER_PATH] [-v]
 
--h, --help            查看所有帮助
+optional arguments:
+  -h, --help            show this help message and exit
+  -lu LOGIN_URL, --login_url LOGIN_URL
+                        The login address, eg: http://192.168.1.1/login.aspx
+  -t1 TIME_1, --time_1 TIME_1
+                        Specifies the pause time (s) before access , eg: 1
+  -t2 TIME_2, --time_2 TIME_2
+                        Specifies the pause time (s) after access , eg: 1
+  -ui USER_ID, --user_id USER_ID
+                        Specify the username attribute by id
+  -un USER_NAME, --user_name USER_NAME
+                        Specify the username attribute by name
+  -uc USER_CLASS, --user_class USER_CLASS
+                        Specify the username attribute by class, No Spaces
+  -us USER_CSS_SELECTOR, --user_css_selector USER_CSS_SELECTOR
+                        Specify the username attribute by css selector, handle Spaces
+  -pi PASS_ID, --pass_id PASS_ID
+                        Specify the password attribute by id
+  -pn PASS_NAME, --pass_name PASS_NAME
+                        Specify the password attribute by name
+  -pc PASS_CLASS, --pass_class PASS_CLASS
+                        Specify the password attribute by class, No Spaces
+  -ps PASS_CSS_SELECTOR, --pass_css_selector PASS_CSS_SELECTOR
+                        Specify the password attribute by css selector, handle Spaces
+  -bi BUTTON_ID, --button_id BUTTON_ID
+                        Specify the login button attribute by id
+  -bn BUTTON_NAME, --button_name BUTTON_NAME
+                        Specify the login button attribute by name
+  -bc BUTTON_CLASS, --button_class BUTTON_CLASS
+                        Specify the login button attribute by class, No Spaces
+  -bs BUTTON_CSS_SELECTOR, --button_css_selector BUTTON_CSS_SELECTOR
+                        Specify the button attribute by css selector, handle Spaces
+  -ud USER_DICT, --user_dict USER_DICT
+                        Specify the login username dict
+  -pd PASS_DICT, --pass_dict PASS_DICT
+                        Specify the login password dict
+  -k KEYWORD, --keyword KEYWORD
+                        Specifies the keyword to match in the return message
+  -bh BROWSER_HEADLESS, --browser_headless BROWSER_HEADLESS
+                        Specifies the Browser browser_headless, eg: True
+  -bp BROWSER_PROXY, --browser_proxy BROWSER_PROXY
+                        Specifies the Browser Proxy IP for HTTP or HTTPS , eg: http://127.0.0.1:8080
+  -bua BROWSER_USERAGENT, --browser_useragent BROWSER_USERAGENT
+                        Specifies the Browser UserAgent , eg: Mozilla/5.0 Version/4.0
+  -bud BROWSER_USER_DIR, --browser_user_dir BROWSER_USER_DIR
+                        Specifies the Browser User Dir , eg: D: emp\Chrome User Data
+  -bcp BROWSER_CHROME_PATH, --browser_chrome_path BROWSER_CHROME_PATH
+                        Specifies the Browser Chrome.exe Path , eg: C:\chrome\chrome.exe
+  -bdp BROWSER_DRIVER_PATH, --browser_driver_path BROWSER_DRIVER_PATH
+                        Specifies the Browser Driver Path, eg: D: emp\chromedriver.exe
+  -v, --version         显示程序当前版本号
 
-#配置浏览器访问时的属性
+Examples:
+  python3 brute-selenium.py -lu http://www.baidu.com
+  python3 brute-selenium.py -lu http://www.baidu.com -p http://127.0.0.1:8080
 
--bh BROWSER_HEADLESS, --browser_headless 是否显示浏览器界面, 例: True
+  其他控制细节参数请通过setting.py进行配置
 
--bp BROWSER_PROXY, --browser_proxy BROWSER_PROXY
-	指定浏览器代理服务器(HTTP或HTTPS)地址,  例: http://127.0.0.1:8080
--bcp BROWSER_CHROME_PATH, --browser_chrome_path BROWSER_CHROME_PATH
-	指定浏览器chrome.exe路径 ,例: C:\chrome\chrome.exe 
-	默认当前目录或使用环境变量下可找到的chrome.exe 
-
--bdp BROWSER_DRIVER_PATH, --browser_driver_path BROWSER_DRIVER_PATH
-    指定浏览器chromedriver.exe路径, 例: D:temp\chromedriver.exe 
-    默认当前目录或使用环境变量下可找到的chromedriver.exe 
-
--bud BROWSERUSERDIR, --BrowserUserDir BROWSERUSERDIR
-	指定浏览器用户数据目录 ,  例: D: emp\Chrome   User Data 
-
--bua BROWSER_USERAGENT, --browser_useragent BROWSER_USERAGENT
-	指定浏览器 UserAgent ,  例: Mozilla/5.0  Version/4.0
-
-
--t1 TIME_1, --time_1 TIME_1
-	指定访问页面前暂停时间(秒) ,  例: 1 ,默认1s
--t2 TIME_2, --time_2 TIME_2
-	指定访问页面后暂停时间(秒) ,  例: 1 ,默认1s
-
-# 指定登录URL
--lu LOGIN_URL, --login_url LOGIN_URL
-	指定登录页面地址,  例: http://192.168.1.1/login.aspx
-
-
-
-#定位登录用户名框框，三选一
--ui USER_ID, --user_id USER_ID
-	指定登录用户名框属性 id值
--un USER_NAME, --user_name USER_NAME
-	指定登录用户名框属性 name值
--uc USER_CLASS, --user_class USER_CLASS
-	指定登录用户名框属性 class值，不能存在空格
-
-#定位登录密码框框，三选一
--pi PASS_ID, --pass_id PASS_ID
-	指定登录密码框属性 id值
--pn PASS_NAME, --pass_name PASS_NAME
-	指定登录密码框属性 id值
--pc PASS_CLASS, --pass_class PASS_CLASS
-	指定登录密码框属性 class值，不能存在空格
-
-#定位登录按钮，三选一
--bi BUTTON_ID, --button_id BUTTON_ID
-	指定登录按钮属性 id值
--bn BUTTON_NAME, --button_name BUTTON_NAME
-	指定登录按钮属性 name值
--bc BUTTON_CLASS, --button_class BUTTON_CLASS
-	指定登录按钮属性 class值，不能存在空格
-
-#指定账号密码字典
--ud USER_DICT, --user_dict USER_DICT
-	指定登录爆破用的用户名字典，默认username.txt
--pd PASS_DICT, --pass_dict PASS_DICT
-	指定登录爆破用的用户名字典，默认password.txt
-
-#指定结果匹配关键字,适用于已经知道登陆成功返回包的情况。
--k KEYWORD, --keyword KEYWORD
-	指定登录爆破用的用户名字典，默认password.txt
+  T00L Version: Ver 0.1.3 2022-03-23 13:30
 ```
 
 

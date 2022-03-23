@@ -56,14 +56,18 @@ class ParserCmd(object):
         parser.add_argument("-ui", "--user_id", help="Specify the username attribute by id", default=None)  # 指定用户名属性 id
         parser.add_argument("-un", "--user_name", help="Specify the username attribute by name", default=None)  # 指定用户名属性 name
         parser.add_argument("-uc", "--user_class", help="Specify the username attribute by class, No Spaces",default=None)  # 指定用户名属性 class
+        parser.add_argument("-us", "--user_css_selector", help="Specify the username attribute by css selector, handle Spaces",default=None)  # CSS选择属性
 
         parser.add_argument("-pi", "--pass_id", help="Specify the password attribute by id", default=None)  # 指定密码属性 id
         parser.add_argument("-pn", "--pass_name", help="Specify the password attribute by name", default=None)  # 指定密码属性 name
         parser.add_argument("-pc", "--pass_class", help="Specify the password attribute by class, No Spaces",default=None)  # 指定密码属性 class
+        parser.add_argument("-ps", "--pass_css_selector", help="Specify the password attribute by css selector, handle Spaces",default=None)  # CSS选择属性
 
         parser.add_argument("-bi", "--button_id", help="Specify the login button attribute by id", default=None)  # 指定登录按钮属性 id
         parser.add_argument("-bn", "--button_name", help="Specify the login button attribute by name", default=None)  # 指定登录按钮属性 name
         parser.add_argument("-bc", "--button_class", help="Specify the login button attribute by class, No Spaces", default=None)  # 指定登录按钮属性 class
+        parser.add_argument("-bs", "--button_css_selector", help="Specify the button attribute by css selector, handle Spaces",default=None)  # CSS选择属性
+
         # 字典配置参数
         parser.add_argument("-ud", "--user_dict", help="Specify the login username dict", default='username.txt')  # 指定用户名字典
         parser.add_argument("-pd", "--pass_dict", help="Specify the login password dict",default='password.txt')  # 指定密码字典

