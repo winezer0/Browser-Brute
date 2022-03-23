@@ -1,19 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''
-@Author: NOVASEC
-@Mail: NOVASEC@email.com
-@Date: 2020-06-12 12:28:42
-@LastEditTime : 2020-06-13 01:36:14
-'''
-#!/usr/bin/env python
-# encoding: utf-8
-
-"""
-Copyright (c) 2006-2019 sqlmap developers (http://sqlmap.org/)
-See the file_name 'LICENSE' for copying permission
-"""
-
+import sys
+sys.dont_write_bytecode = True
 import copy
 import types
 

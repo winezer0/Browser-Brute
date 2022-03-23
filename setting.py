@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
+import sys
+sys.dont_write_bytecode = True
 # 全局配置文件
 import pathlib
 from lib.DataType import config

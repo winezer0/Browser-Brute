@@ -1,7 +1,8 @@
-# coding:utf-8
-
+#!/usr/bin/env python
+# encoding: utf-8
 import time
 import sys
+sys.dont_write_bytecode = True
 from selenium import webdriver
 from selenium.webdriver.common import action_chains
 from selenium.webdriver.chrome.options import Options

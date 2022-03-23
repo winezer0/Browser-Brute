@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
+import sys
+sys.dont_write_bytecode = True
 import argparse
 # 获取版本号,并返回版本号字符串
 from setting import version
