@@ -13,9 +13,9 @@ https://mp.weixin.qq.com/s/qLmEp8KXmYYyGaPkLWGwAw
 
 1. 20220321 添加配置文件功能,记录命令有一些不友好。[已添加]
 
-2. 20220323 增加css选择器（find_element_by_css_selector）处理其他三个选择器无法匹配到空格关键字的问题
 
-   
+2. 20220321 不小心删除了整个项目,需要重新积累Star啦
+3. 20220323 增加css选择器（find_element_by_css_selector）处理其他三个选择器无法匹配到空格关键字的问题
 
 # Todo
 
