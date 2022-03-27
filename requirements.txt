@@ -1,1 +1,2 @@
+pyfiglet
 selenium==3.141.0  #其他更高版本测试通过

@@ -10,9 +10,9 @@ from lib.DataType import config
 from lib.InputParse import ParserCmd, remove_dict_none_value_key
 
 if sys.version > '3':
-    print('Python3 was used !!! This program supports Python2 and Python3')
+    print('[*] Python3 was used !!! This program should supports Python2 and Python3')
 else:
-    print('Python2 was used !!! This program supports Python2 and Python3')
+    print('[*] Python2 was used !!! This program should supports Python2 and Python3')
     sys.reload(sys)
     sys.setdefaultencoding('utf-8')
 

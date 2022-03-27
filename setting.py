@@ -10,7 +10,7 @@ from lib.DataType import config
 BASE_DIR = pathlib.Path(__file__).parent.resolve()
 
 # 版本号配置
-version = "Ver 0.1.3 2022-03-23 13:30"
+version = "Ver 0.1.4 2022-03-27 23:33"
 
 # 在配置文件中配置默认目标文件等参数 比cmd输入参数优先级低 一般作为默认参数使用
 # config.target = None

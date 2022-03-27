@@ -3,6 +3,7 @@
 import sys
 sys.dont_write_bytecode = True
 import argparse
+from pyfiglet import Figlet
 # 获取版本号,并返回版本号字符串
 from setting import version
 
@@ -45,7 +46,7 @@ class ParserCmd(object):
                           \r  
                           """
 
-        parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,add_help=True,)
+        parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,add_help=True, description=Figlet().renderText("Brower-Brute"))
         # 使 example 支持换行
         parser.epilog = example.format(shell_name=parser.prog, version=version)
 
