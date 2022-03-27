@@ -44,7 +44,7 @@ https://mp.weixin.qq.com/s/qLmEp8KXmYYyGaPkLWGwAw
 # 命令示例:
 
 ```
-python3 brute-selenium.py -lu http://xxxxx/login.html --user_name suLoginname  --pass_name suDwp --button_class dlButtonId -bcp "D:\xxxx\Chrome\chrome.exe" -bdp "chromedriver\chromedriver_win32_96.0.4664.45.exe"   -ud username.txt -pd password.txt 
+python3 browser-brute.py -lu http://xxxxx/login.html --user_name suLoginname  --pass_name suDwp --button_class dlButtonId -bcp "D:\xxxx\Chrome\chrome.exe" -bdp "chromedriver\chromedriver_win32_96.0.4664.45.exe"   -ud username.txt -pd password.txt 
 
 当前版本推荐在setting.py中配置启动参数
 ```
@@ -58,7 +58,7 @@ python3 brute-selenium.py -lu http://xxxxx/login.html --user_name suLoginname  -
 ```
 Python3 was used !!! This program supports Python2 and Python3
 
-usage: brute-selenium.py [-h] [-lu LOGIN_URL] [-t1 TIME_1] [-t2 TIME_2] [-ui USER_ID] [-un USER_NAME] [-uc USER_CLASS] [-us USER_CSS_SELECTOR] [-pi PASS_ID] [-pn PASS_NAME] [-pc PASS_CLASS] [-ps PASS_CSS_SELECTOR]
+usage: browser-brute.py [-h] [-lu LOGIN_URL] [-t1 TIME_1] [-t2 TIME_2] [-ui USER_ID] [-un USER_NAME] [-uc USER_CLASS] [-us USER_CSS_SELECTOR] [-pi PASS_ID] [-pn PASS_NAME] [-pc PASS_CLASS] [-ps PASS_CSS_SELECTOR]
                          [-bi BUTTON_ID] [-bn BUTTON_NAME] [-bc BUTTON_CLASS] [-bs BUTTON_CSS_SELECTOR] [-ud USER_DICT] [-pd PASS_DICT] [-k KEYWORD] [-bh BROWSER_HEADLESS] [-bp BROWSER_PROXY] [-bua BROWSER_USERAGENT]
                          [-bud BROWSER_USER_DIR] [-bcp BROWSER_CHROME_PATH] [-bdp BROWSER_DRIVER_PATH] [-v]
 
@@ -115,8 +115,8 @@ optional arguments:
   -v, --version         显示程序当前版本号
 
 Examples:
-  python3 brute-selenium.py -lu http://www.baidu.com
-  python3 brute-selenium.py -lu http://www.baidu.com -p http://127.0.0.1:8080
+  python3 browser-brute.py -lu http://www.baidu.com
+  python3 browser-brute.py -lu http://www.baidu.com -p http://127.0.0.1:8080
 
   其他控制细节参数请通过setting.py进行配置
 
