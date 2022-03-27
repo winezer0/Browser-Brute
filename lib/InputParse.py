@@ -46,7 +46,7 @@ class ParserCmd(object):
                           \r  
                           """
 
-        parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,add_help=True, description=Figlet().renderText("Brower-Brute"))
+        parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,add_help=True, description=Figlet().renderText("Browser-Brute"))
         # 使 example 支持换行
         parser.epilog = example.format(shell_name=parser.prog, version=version)
 
