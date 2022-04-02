@@ -20,7 +20,7 @@ https://mp.weixin.qq.com/s/qLmEp8KXmYYyGaPkLWGwAw
 
 chromePortable内仅仅包含便携版的启动器和下载器，不包含实际可执行的Chrome程序。
 
-因此，使用前请打开Chrome.vbs下载对应的chrome浏览器版本。
+因此，使用前请 联网打开 [chromePortable目录下的Chrome.vbs或Chrome.exe] 下载对应的chrome浏览器版本。
 
 如果有安全环境需求，建议自己在setting.py内设置自己的Chrome.exe路径。
 ```
