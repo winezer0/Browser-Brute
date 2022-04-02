@@ -49,26 +49,39 @@ chromePortable内仅仅包含便携版的启动器和下载器，不包含实际
 
 1. 你需要一个Chrome浏览器
 
-2. 你需要一个chromedriver
+   ```
+   已内置便携Chrome版本下载器，使用前请打开ChromePortable/Chrome.vbs下载对应的chrome浏览器版本。
+   ```
+
+2. 你需要一个chromedriver驱动程序
 
    ```
-   Chrome与Chromedriver版本对应表（最新）【附下载链接】_蔚蓝星辰mic的博客-CSDN博客
-    https://blog.csdn.net/weixin_45532870/article/details/106327359
+   已内置chromedriver_win32_100.0.4896.60.exe,如需替换请修改setting.py中的chromedriver路径。
+   
+   Chrome与Chromedriver版本对应表:
+   https://blog.csdn.net/weixin_45532870/article/details/106327359
    ```
 
    
 
-
-
 # 命令示例:
 
 ```
-python3 browser-brute.py -lu http://xxxxx/login.html --user_name suLoginname  --pass_name suDwp --button_class dlButtonId -bcp "D:\xxxx\Chrome\chrome.exe" -bdp "chromedriver\chromedriver_win32_96.0.4664.45.exe"   -ud username.txt -pd password.txt 
-
+方式1：使用setting.py配置启动参数后 
+python3 browser-brute.py
 当前版本推荐在setting.py中配置启动参数
+
+
+方式2：命令行制定启动参数
+python3 browser-brute.py 
+-lu http://xxxxx/login.html 
+--user_[class|name|id|CSS]    帐号表单[class|name|id|CSS]属性  
+--pass_[class|name|id|CSS]    密码表单[class|name|id|CSS]属性 
+--button_[class|name|id|CSS]  登录按钮[class|name|id|CSS]属性 
+-bcp "path-of-chrome.exe" 
+-bdp "path-of-chromedriver.exe"  
+-ud username.txt -pd password.txt 
 ```
-
-
 
 
 
