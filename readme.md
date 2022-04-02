@@ -7,6 +7,24 @@ Python实现简约的selenium登录爆破框架
 
 https://mp.weixin.qq.com/s/qLmEp8KXmYYyGaPkLWGwAw
 
+# 重点注意
+
+```
+由于脚本依赖Chrome和ChromeDriver运行环境，导致新人环境经常配置错误。
+
+因此考虑上次Chrome程序及对应驱动，但是github无法上传超过100M的数据。
+
+并且考虑到程序依赖环境的便携，因此存入chromePortable (Chrome便携版,可更新)
+
+注意：
+
+chromePortable内仅仅包含便携版的启动器和下载器，不包含实际可执行的Chrome程序。
+
+因此，使用前请打开Chrome.vbs下载对应的chrome浏览器版本。
+
+如果有安全环境需求，建议自己在setting.py内设置自己的Chrome.exe路径。
+```
+
 
 
 # 更新记录
@@ -16,6 +34,7 @@ https://mp.weixin.qq.com/s/qLmEp8KXmYYyGaPkLWGwAw
 
 2. 20220321 不小心删除了整个项目,需要重新积累Star啦
 3. 20220323 增加css选择器（find_element_by_css_selector）处理其他三个选择器无法匹配到空格关键字的问题
+4. 20220402 增加chromedriver驱动和chromePortable文件夹。内置chromedriver驱动和Chrome便携版本vbs下载器。
 
 # Todo
 

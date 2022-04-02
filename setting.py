@@ -19,7 +19,7 @@ version = "Ver 0.1.4 2022-03-27 23:33"
 # css_selector基本支持所有元素匹配 使用参考 https://blog.csdn.net/mshxuyi/article/details/103601705
 #######################浏览器默认配置#######################
 config.browser_chrome_path = r"chromePortable\Chrome\chrome.exe"
-config.browser_driver_path = r"chromedriver\chromedriver_win32_99.0.4844.51.exe"
+config.browser_driver_path = r"chromedriver\chromedriver_win32_100.0.4896.60.exe"
 config.browser_proxy = None  # http://127.0.0.1：8080
 config.browser_useragent = None
 config.browser_user_dir = None
