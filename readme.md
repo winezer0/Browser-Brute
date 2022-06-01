@@ -35,6 +35,8 @@ chromePortable内仅仅包含便携版的启动器和下载器，不包含实际
 2. 20220321 不小心删除了整个项目,需要重新积累Star啦
 3. 20220323 增加css选择器（find_element_by_css_selector）处理其他三个选择器无法匹配到空格关键字的问题
 4. 20220402 增加chromedriver驱动和chromePortable文件夹。内置chromedriver驱动和Chrome便携版本vbs下载器。
+5.  Selenium之find_element_by_css_selector()的使用方法参考:
+   https://blog.csdn.net/qq_35861801/article/details/108125082
 
 # Todo
 
