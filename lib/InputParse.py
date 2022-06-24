@@ -73,8 +73,9 @@ class ParserCmd(object):
         # 字典配置参数
         parser.add_argument("-ud", "--user_dict", help="Specify the login username dict", default='username.txt')  # 指定用户名字典
         parser.add_argument("-pd", "--pass_dict", help="Specify the login password dict",default='password.txt')  # 指定密码字典
+
         # 关键字匹配参数
-        parser.add_argument("-k", "--keyword", help="Specifies the keyword to match in the return message", default='success')  # 指定在返回报文中匹配的关键字
+        # parser.add_argument("-k", "--keyword", help="Specifies the keyword to match in the return message", default='success')  # 指定在返回报文中匹配的关键字
 
         # 浏览器配置参数
         parser.add_argument("-bh", "--browser_headless", help="Specifies the Browser browser_headless, eg: True", default=False)  # 指定是否显示浏览器界面

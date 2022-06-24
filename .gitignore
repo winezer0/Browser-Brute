@@ -1,3 +1,4 @@
 chromePortable
 .gitignore
 .idea
+*.pyc

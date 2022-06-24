@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 import sys
+
 sys.dont_write_bytecode = True
 # 全局配置文件
 import pathlib
@@ -49,6 +50,9 @@ config.button_css_selector = None
 config.user_dict = "username.txt"
 config.pass_dict = "password.txt"
 
-# 匹配关键字配置 # 一般就是success、welcome、登录成功等关键字
-config.keyword = None
+# 匹配关键字配置 # 一般就是success、welcome、登录成功等关键字,修改为列表
+SUCCESS_KEY_LIST = ["登录成功", "success"]  # 为空时默认True
+
+# 配置结果文件编码
+RESULT_FILE_ENCODING = "gb2312"
 #######################################################
