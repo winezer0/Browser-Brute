@@ -29,14 +29,30 @@ chromePortable内仅仅包含便携版的启动器和下载器，不包含实际
 
 # 更新记录
 
-1. 20220321 添加配置文件功能,记录命令有一些不友好。[已添加]
+20220321 添加配置文件功能,记录命令有一些不友好。[已添加]
+
+20220321 不小心删除了整个项目,需要重新积累Star啦
+
+20220323 增加css选择器（find_element_by_css_selector）处理其他三个选择器无法匹配到空格关键字的问题
+
+20220402 增加chromedriver驱动和chromePortable文件夹。内置chromedriver驱动和Chrome便携版本vbs下载器。
+
+```
+Selenium之find_element_by_css_selector()的使用方法参考:
+https://blog.csdn.net/qq_35861801/article/details/108125082
+```
+
+20220727 支持USER:PASS格式的字典,当参数设置时,用户名字典和密码字典相同时,自动调用。
+
+```
+if user_dict == pass_dict:
+    user_pass_list = f_user.readlines()
+    for user_pass in user_pass_list:
+        user = user_pass.split(":", 1)[0].strip()
+        pwd = user_pass.split(":", 1)[-1].strip()
+```
 
 
-2. 20220321 不小心删除了整个项目,需要重新积累Star啦
-3. 20220323 增加css选择器（find_element_by_css_selector）处理其他三个选择器无法匹配到空格关键字的问题
-4. 20220402 增加chromedriver驱动和chromePortable文件夹。内置chromedriver驱动和Chrome便携版本vbs下载器。
-5.  Selenium之find_element_by_css_selector()的使用方法参考:
-   https://blog.csdn.net/qq_35861801/article/details/108125082
 
 # Todo
 

