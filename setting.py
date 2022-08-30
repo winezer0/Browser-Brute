@@ -50,9 +50,16 @@ config.button_css_selector = None
 config.user_dict = "username.txt"
 config.pass_dict = "password.txt"
 
-# 匹配关键字配置 # 一般就是success、welcome、登录成功等关键字,修改为列表
-SUCCESS_KEY_LIST = ["登录成功", "success"]  # 为空时默认True
+# 配置匹配网页关键字 # 两个匹配项目同时只有一个生效, 优先匹配 SUCCESS_KEY_LIST # 无需匹配可置为空
+# 匹配登录成功的关键字，一般就是success、登录成功等,为空时跳过
+SUCCESS_KEY_LIST = []  # ["登录成功", "success"]
+# 匹配登录失败关键字，一般就是 登录失败 、用户名或密码错误等,为空时跳过
+FAILURE_KEY_LIST = []  # ["登录失败", "用户名或密码错误"]
 
-# 配置结果文件编码
+# 设置结果文件名称
+RESULT_LOG_NAME = "Brute-Log.txt"
+RESULT_LOG_ENCODING = "utf-8"
+
+RESULT_FILE_NAME = "Brute-Result.csv"
 RESULT_FILE_ENCODING = "gb2312"
 #######################################################

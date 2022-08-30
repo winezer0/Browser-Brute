@@ -1,17 +1,19 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import time
-import sys
-
-from lib.util import list_in_str
-from setting import RESULT_FILE_ENCODING, SUCCESS_KEY_LIST
-
-sys.dont_write_bytecode = True
 from selenium import webdriver
 from selenium.webdriver.common import action_chains
 from selenium.webdriver.chrome.options import Options
 from lib.DataType import config
 from lib.InputParse import ParserCmd, remove_dict_none_value_key
+
+import time
+import sys
+
+from lib.util import list_in_str
+from setting import RESULT_FILE_ENCODING, SUCCESS_KEY_LIST, FAILURE_KEY_LIST, RESULT_LOG_NAME, RESULT_LOG_ENCODING, \
+    RESULT_FILE_NAME
+
+sys.dont_write_bytecode = True
 
 if sys.version > '3':
     print('[*] Python3 was used !!! This program should supports Python2 and Python3')
@@ -21,7 +23,7 @@ else:
     sys.setdefaultencoding('utf-8')
 
 
-def SetBrowser(proxy=None, user_agent=None, user_dir=None, chrome_path=None, driver_path=None, headless=False):
+def set_browser(proxy=None, user_agent=None, user_dir=None, chrome_path=None, driver_path=None, headless=False):
     """
     # selenium.webdriver.chrome.options 中add_argument 常用参数表
     # https://blog.csdn.net/qq_42059060/article/details/104522492
@@ -45,10 +47,11 @@ def SetBrowser(proxy=None, user_agent=None, user_dir=None, chrome_path=None, dri
 
     # 是否使用自定义user-agent
     if not user_agent:
-        user_agent = 'Mozilla/5.0 (Linux; U; Android 8.1.0; zh-cn; BLA-AL00 Build/HUAWEIBLA-AL00) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/57.0.2987.132 MQQBrowser/8.9 Mobile Safari/537.36'
+        user_agent = 'Mozilla/5.0 (Linux; U; Android 8.1.0; zh-cn; BLA-AL00 Build/HUAWEIBLA-AL00) AppleWebKit/537.36 ' \
+                     '(KHTML, like Gecko) Version/4.0 Chrome/57.0.2987.132 MQQBrowser/8.9 Mobile Safari/537.36 '
     options.add_argument('--user-agent=%s' % user_agent)
 
-    # 使用自定义帐户资料夹
+    # 使用自定义账户资料夹
     if user_dir is not None:
         # browser_user_dir = "D:\temp\Chrome User Data"
         options.add_argument('user-data-dir=%s' % user_dir)
@@ -71,12 +74,12 @@ def SetBrowser(proxy=None, user_agent=None, user_dir=None, chrome_path=None, dri
     else:
         # 默认驱动路径加载
         browser = webdriver.Chrome(options=options)
-    print('SetBrowser Initialize Successfully !!!')
+    print('set_browser Initialize Successfully !!!')
     return browser
 
 
-def browser_get_elem(moudle, browser, elem_find_dict):
-    if elem_find_dict["find_element_by_id"] != None:
+def browser_get_elem(module, browser, elem_find_dict):
+    if elem_find_dict["find_element_by_id"] is not None:
         elem = browser.find_element_by_id(elem_find_dict["find_element_by_id"])
     elif elem_find_dict["find_element_by_name"] is not None:
         elem = browser.find_element_by_name(elem_find_dict["find_element_by_name"])
@@ -86,17 +89,21 @@ def browser_get_elem(moudle, browser, elem_find_dict):
         elem = browser.find_element_by_css_selector(elem_find_dict["find_element_by_css_selector"])
     else:
         elem = None
-        print('No {} elem, browser.quit and sys.exit!!!'.format(moudle))
+        print('No {} elem, browser.quit and sys.exit!!!'.format(module))
         browser.quit()
         sys.exit()
     return elem
 
 
-def BruteLogin(user=None, pwd=None, login_url=None, time_1=1, time_2=1,
-               user_id=None, user_class=None, user_name=None, user_css_selector=None,
-               pass_id=None, pass_class=None, pass_name=None, pass_css_selector=None,
-               button_id=None, button_class=None, button_name=None, button_css_selector=None,
-               success_key_list=['success']):
+def brute_login(user=None, pwd=None, login_url=None, time_1=1, time_2=1,
+                user_id=None, user_class=None, user_name=None, user_css_selector=None,
+                pass_id=None, pass_class=None, pass_name=None, pass_css_selector=None,
+                button_id=None, button_class=None, button_name=None, button_css_selector=None,
+                success_key_list=None, failure_key_list=None):
+    if failure_key_list is None:
+        failure_key_list = []
+    if success_key_list is None:
+        success_key_list = []
     try:
         action = action_chains.ActionChains(browser)
         browser.delete_all_cookies()  # 清除cookie
@@ -108,26 +115,26 @@ def BruteLogin(user=None, pwd=None, login_url=None, time_1=1, time_2=1,
         # browser.refresh() # 刷新方法 refresh
         # browser.implicitly_wait(5) #implicitly_wait 隐式等待
 
-        moudle = 'Username'
+        module = 'Username'
         elem_find_dict = {'find_element_by_id': user_id,
                           'find_element_by_name': user_name,
                           'find_element_by_class_name': user_class,
                           'find_element_by_css_selector': user_css_selector
                           }
-        elem = browser_get_elem(moudle, browser, elem_find_dict)
+        elem = browser_get_elem(module, browser, elem_find_dict)
 
         if elem:
             # 填充账号
             elem.send_keys(user)
             action.perform()
 
-        moudle = 'Password'
+        module = 'Password'
         elem_find_dict = {'find_element_by_id': pass_id,
                           'find_element_by_name': pass_name,
                           'find_element_by_class_name': pass_class,
                           'find_element_by_css_selector': pass_css_selector
                           }
-        elem = browser_get_elem(moudle, browser, elem_find_dict)
+        elem = browser_get_elem(module, browser, elem_find_dict)
         if elem:
             # 填充密码
             elem.send_keys(pwd)
@@ -159,30 +166,33 @@ def BruteLogin(user=None, pwd=None, login_url=None, time_1=1, time_2=1,
         # print('current Page Size:', pageSourceSize)
         brute_Log = "{}|{}|{}|{}|{}".format(user, pwd, str(currentPageUrl), str(currentPageTitle), str(pageSourceSize))
         print('[*] 访问结果: {}'.format(brute_Log))
-        f_BruteLog = open("Brute-Log.txt", "a+")
-        f_BruteLog.write(brute_Log + '\n')
-        f_BruteLog.close()
+        with open(RESULT_LOG_NAME, "a+", encoding=RESULT_LOG_ENCODING) as f_BruteLog:
+            f_BruteLog.write(brute_Log + '\n')
 
-        # 自定义匹返回页面匹配关键字
-        result_str = None
-        if list_in_str(success_key_list, browser.page_source, default=True):
-            keyword_result = "{}|{}|{} 成功匹配到登录成功关键字列表: {}".format(user, pwd, str(currentPageUrl), success_key_list)
-            print('[+] 匹配结果: {}'.format(keyword_result))
-            status = "匹配关键字成功"
-        else:
-            keyword_result = '{}|{}|{} 没有匹配到登录成功关键字列表: {} '.format(user, pwd, str(currentPageUrl), success_key_list)
-            print('[-] 匹配结果: {}'.format(keyword_result))
-            status = "匹配关键字失败"
-
-        if result_str:
+        # 开启登录后登录成功关键字匹配功能
+        if len(success_key_list) > 0:
+            # 自定义匹返回页面匹配关键字
+            if list_in_str(success_key_list, browser.page_source, default=True):
+                status = "预期登录成功"
+            else:
+                status = "疑似登录失败"
             result_str = '"user:{}","pwd:{}","Url:{}","keyword:{}","status:{}"'.format(user, pwd, str(currentPageUrl),
                                                                                        success_key_list, status)
-            f_result = open("Brute-Result.csv", "a+", encoding=RESULT_FILE_ENCODING)
-            f_result.write(result_str + '\n')
-            f_result.close()
-        else:
-            print('[!] 发生错误!!!结果字符串未被赋值,请检查代码错误...')
-            exit()
+            with open(RESULT_FILE_NAME, "a+", encoding=RESULT_FILE_ENCODING) as f_result:
+                f_result.write(result_str + '\n')
+                print(result_str)
+        # 开启登录后登录失败关键字匹配功能
+        elif len(failure_key_list) > 0:
+            # 自定义匹返回页面匹配关键字
+            if list_in_str(failure_key_list, browser.page_source, default=False):
+                status = "预期登录失败"
+            else:
+                status = "疑似登录成功"
+            result_str = '"user:{}","pwd:{}","Url:{}","keyword:{}","status:{}"'.format(user, pwd, str(currentPageUrl),
+                                                                                       failure_key_list, status)
+            with open("Brute-Result.csv", "a+", encoding=RESULT_FILE_ENCODING) as f_result:
+                f_result.write(result_str + '\n')
+                print(result_str)
 
     except KeyboardInterrupt as error:
         print('[-] KeyboardInterrupt:{}'.format(error))
@@ -195,11 +205,15 @@ def BruteLogin(user=None, pwd=None, login_url=None, time_1=1, time_2=1,
         exit()
 
 
-def BatchBruteLogin(login_url=None, time_1=1, time_2=1,
-                    user_id=None, user_name=None, user_class=None, user_css_selector=None,
-                    pass_id=None, pass_name=None, pass_class=None, pass_css_selector=None,
-                    button_id=None, button_name=None, button_class=None, button_css_selector=None,
-                    user_dict='username.txt', pass_dict='password.txt', success_key_list=['success']):
+def batch_brute_login(login_url=None, time_1=1, time_2=1,
+                      user_id=None, user_name=None, user_class=None, user_css_selector=None,
+                      pass_id=None, pass_name=None, pass_class=None, pass_css_selector=None,
+                      button_id=None, button_name=None, button_class=None, button_css_selector=None,
+                      user_dict='username.txt', pass_dict='password.txt', success_key_list=None, failure_key_list=None):
+    if failure_key_list is None:
+        failure_key_list = []
+    if success_key_list is None:
+        success_key_list = []
     if user_dict == pass_dict:
         print('[+] 正在使用账号密码对格式字典文件 {} 进行爆破...'.format(user_dict))
         with open(user_dict, 'r', ) as f_user:
@@ -208,14 +222,14 @@ def BatchBruteLogin(login_url=None, time_1=1, time_2=1,
                 user = user_pass.split(":", 1)[0].strip()
                 pwd = user_pass.split(":", 1)[-1].strip()
                 print('[*] 开始测试: {},{}'.format(user, pwd))
-                BruteLogin(user=user, pwd=pwd, login_url=login_url, time_1=time_1, time_2=time_2,
-                           user_id=user_id, user_name=user_name, user_class=user_class,
-                           user_css_selector=user_css_selector,
-                           pass_id=pass_id, pass_name=pass_name, pass_class=pass_class,
-                           pass_css_selector=pass_css_selector,
-                           button_id=button_id, button_name=button_name, button_class=button_class,
-                           button_css_selector=button_css_selector,
-                           success_key_list=success_key_list)
+                brute_login(user=user, pwd=pwd, login_url=login_url, time_1=time_1, time_2=time_2,
+                            user_id=user_id, user_name=user_name, user_class=user_class,
+                            user_css_selector=user_css_selector,
+                            pass_id=pass_id, pass_name=pass_name, pass_class=pass_class,
+                            pass_css_selector=pass_css_selector,
+                            button_id=button_id, button_name=button_name, button_class=button_class,
+                            button_css_selector=button_css_selector,
+                            success_key_list=success_key_list, failure_key_list=failure_key_list)
     else:
         with open(user_dict, 'r', ) as f_user:
             user_list = f_user.readlines()
@@ -226,21 +240,22 @@ def BatchBruteLogin(login_url=None, time_1=1, time_2=1,
             for pwd in pass_list:
                 pwd = pwd.strip()
                 print('[*] 开始测试: {},{}'.format(user, pwd))
-                BruteLogin(user=user, pwd=pwd, login_url=login_url, time_1=time_1, time_2=time_2,
-                           user_id=user_id, user_name=user_name, user_class=user_class,
-                           user_css_selector=user_css_selector,
-                           pass_id=pass_id, pass_name=pass_name, pass_class=pass_class,
-                           pass_css_selector=pass_css_selector,
-                           button_id=button_id, button_name=button_name, button_class=button_class,
-                           button_css_selector=button_css_selector,
-                           success_key_list=success_key_list)
+                brute_login(user=user, pwd=pwd, login_url=login_url, time_1=time_1, time_2=time_2,
+                            user_id=user_id, user_name=user_name, user_class=user_class,
+                            user_css_selector=user_css_selector,
+                            pass_id=pass_id, pass_name=pass_name, pass_class=pass_class,
+                            pass_css_selector=pass_css_selector,
+                            button_id=button_id, button_name=button_name, button_class=button_class,
+                            button_css_selector=button_css_selector,
+                            success_key_list=success_key_list,
+                            failure_key_list=failure_key_list)
 
 
 if __name__ == '__main__':
     # 解析命令行参数
     args = ParserCmd().init()
 
-    # 对于默认为None和Flase的参数需要进行忽略,这种情况下,所有参数的默认输入值必须设置为（None和Flase）,这两种值的情况下就会调用默认值
+    # 对于默认为None和False的参数需要进行忽略,这种情况下,所有参数的默认输入值必须设置不为（None和False）,这两种值的情况下就会调用默认值
     remove_dict_none_value_key(args)
 
     # 将用户输入的参数传递到config(全局字典变量) #解析命令行功能时会覆盖setting.py中的配置文件参数
@@ -253,23 +268,25 @@ if __name__ == '__main__':
 
     try:
         # 设置浏览器
-        browser = SetBrowser(proxy=config.browser_proxy, user_agent=config.browser_useragent,
-                             user_dir=config.browser_user_dir, chrome_path=config.browser_chrome_path,
-                             driver_path=config.browser_driver_path, headless=config.browser_headless)
+        browser = set_browser(proxy=config.browser_proxy, user_agent=config.browser_useragent,
+                              user_dir=config.browser_user_dir, chrome_path=config.browser_chrome_path,
+                              driver_path=config.browser_driver_path, headless=config.browser_headless)
     except Exception as error:
         print("[!] 注意: 浏览器设置发生错误,错误内容：{} ,即将退出程序...".format(error))
         sys.exit()
 
     try:
         # 开始进行批量爆破
-        BatchBruteLogin(login_url=config.login_url, time_1=config.time_1, time_2=config.time_2,
-                        user_id=config.user_id, user_class=config.user_class, user_name=config.user_name,
-                        user_css_selector=config.user_css_selector,
-                        pass_id=config.pass_id, pass_class=config.pass_class, pass_name=config.pass_name,
-                        pass_css_selector=config.pass_css_selector,
-                        button_id=config.button_id, button_class=config.button_class, button_name=config.button_name,
-                        button_css_selector=config.button_css_selector,
-                        user_dict=config.user_dict, pass_dict=config.pass_dict, success_key_list=SUCCESS_KEY_LIST)
+        batch_brute_login(login_url=config.login_url, time_1=config.time_1, time_2=config.time_2,
+                          user_id=config.user_id, user_class=config.user_class, user_name=config.user_name,
+                          user_css_selector=config.user_css_selector,
+                          pass_id=config.pass_id, pass_class=config.pass_class, pass_name=config.pass_name,
+                          pass_css_selector=config.pass_css_selector,
+                          button_id=config.button_id, button_class=config.button_class, button_name=config.button_name,
+                          button_css_selector=config.button_css_selector, user_dict=config.user_dict,
+                          pass_dict=config.pass_dict,
+                          success_key_list=SUCCESS_KEY_LIST,
+                          failure_key_list=FAILURE_KEY_LIST)
     except Exception as error:
         print("[!] 注意:爆破模块发生错误,错误内容：{}".format(error))
     finally:
