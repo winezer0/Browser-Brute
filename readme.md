@@ -7,6 +7,14 @@ Python实现简约的selenium登录爆破框架
 
 https://mp.weixin.qq.com/s/qLmEp8KXmYYyGaPkLWGwAw
 
+
+
+关于如何使用CSS选择器
+
+谷歌浏览器--F12--Crtl+C选择元素--右键复制--复制Selector
+
+
+
 # 重点注意
 
 ```
