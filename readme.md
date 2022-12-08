@@ -183,3 +183,11 @@ Examples:
 
 
 
+# NEED STAR And ISSUE
+
+```
+1、右上角点击Star支持更新.
+2、ISSUE或NOVASEC提更新需求
+```
+
+![NOVASEC](doc/NOVASEC.jpg)
