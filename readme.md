@@ -36,13 +36,8 @@ chromePortable内仅仅包含便携版的启动器和下载器，不包含实际
 不能使用最新版的selenium，建议使用：selenium=4.2.0（感谢wolvez反馈）
 
 pip3 install -r requirements.txt
-
-
 pip3 uninstall selenium
-
-
 pip3 install selenium==4.2.0
-
 
 ```
 
