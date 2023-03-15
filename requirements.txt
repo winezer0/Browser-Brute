@@ -1,2 +1,2 @@
 pyfiglet
-selenium  # selenium >=3.141.0 其他更高版本测试通过
+selenium==4.2.0  # selenium >=3.141.0 and seleni<===4.2.0
