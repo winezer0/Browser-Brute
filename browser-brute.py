@@ -124,6 +124,8 @@ def brute_login(user=None, pwd=None, login_url=None, time_1=1, time_2=1,
         elem = browser_get_elem(module, browser, elem_find_dict)
 
         if elem:
+            # 清空数据
+            elem.clear()
             # 填充账号
             elem.send_keys(user)
             action.perform()
@@ -136,6 +138,8 @@ def brute_login(user=None, pwd=None, login_url=None, time_1=1, time_2=1,
                           }
         elem = browser_get_elem(module, browser, elem_find_dict)
         if elem:
+            # 清空数据
+            elem.clear()
             # 填充密码
             elem.send_keys(pwd)
             action.perform()
