@@ -1,0 +1,13 @@
+参考资料 https://zhuanlan.zhihu.com/p/17552770554
+
+linux64：https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.92/linux64/chromedriver-linux64.zip
+mac-arm64：https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.92/mac-arm64/chromedriver-mac-arm64.zip
+mac-x64：https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.92/mac-x64/chromedriver-mac-x64.zip
+
+win32：https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.92/win32/chromedriver-win32.zip
+win64：https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.92/win64/chromedriver-win64.zip
+
+这个有配套的chrome:https://googlechromelabs.github.io/chrome-for-testing/
+
+把上面的136.0.7103.92替换成任意一个Chrome版本号即可，记得ChromeDriver要与对应的Chrome配合使用，否则可能会出错。
+
