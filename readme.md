@@ -1,9 +1,11 @@
 
-# 模拟浏览器进行登录爆破工具 -- by NOVASEC   
+# 基于 selenium 模拟浏览器进行登录枚举 -- by NOVASEC   
+
+由于 selenium 依赖问题 该项目不再进行维护
 
 开发及使用细节参考:
 
-Python实现简约的selenium登录爆破框架
+Python实现简约的 selenium 登录爆破框架
 
 https://mp.weixin.qq.com/s/qLmEp8KXmYYyGaPkLWGwAw
 
